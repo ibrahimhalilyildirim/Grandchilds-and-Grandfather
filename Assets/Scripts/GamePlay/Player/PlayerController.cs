@@ -1,10 +1,15 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public event Action<bool> OnMovementStateChanged;
+
     [Header("Movement Settings")]
     [SerializeField] private Transform _orentationTransform;
     [SerializeField] private float _movementSpeed;
+    private bool _isCurrentlyMoving = false;
 
     private Rigidbody _playerRigidbody;
     private float _horizontalInput, _verticalInput;
@@ -15,6 +20,23 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private KeyCode _jumpKey;
     [SerializeField] private float _jumpForce;
+
+    [Header("Visual Settings")]
+    [SerializeField] private Transform _playerVisual; // Karakter modelinin olduğu obje.
+    [SerializeField] private float _rotationSpeed = 10f; // Karakter modelinin dönüş hızı.
+
+    private void RotatePlayerViusal()
+    {
+        if(_movementDirection != Vector3.zero) // hareket yönü sıfır değilse.(Yani karakter bir yöne basıyorsa.)
+        {
+            // Gitmek istediğimiz yöne doğru bir hedef rotasyon oluşturuyoruz.
+            Quaternion targetRotation = Quaternion.LookRotation(_movementDirection.normalized);
+
+            // Karakterin mevcut rotasyonundan hedef rotasyona yumuşak bir geçiş yapıyoruz.
+            _playerVisual.rotation = Quaternion.Slerp(_playerVisual.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
+        }
+    }
+
 
     // Awake: Obje doğar doğmaz (henüz "gözlerini açmadan") çalışır. Sadece 1 kez çalışır.
     // OnEnable: Obje aktif olduğu anda çalışır. Obje her kapatılıp açıldığında (tikini kaldırıp geri açtığında) tekrar tekrar çalışır.
@@ -37,7 +59,7 @@ public class PlayerController : MonoBehaviour
     }
     private void SetPlayerJumping()
     {
-        if (Input.GetKey(_jumpKey))
+        if (Input.GetKeyDown(_jumpKey))
         {
             _playerRigidbody.linearVelocity = new UnityEngine.Vector3(_playerRigidbody.linearVelocity.x,
             0f, _playerRigidbody.linearVelocity.z);
@@ -47,9 +69,27 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        SetInputs();
         SetPlayerMovement();
-        SetPlayerJumping();
     }
+    private void Update()
+    {
+        SetPlayerJumping();
+        SetInputs();
+        RotatePlayerViusal();
+        IsPlayerMoving();
+    }
+    private void IsPlayerMoving()
+    {
+        Vector3 horizontalVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
+        bool isMovingNow = horizontalVelocity.magnitude > 0.1f;
+
+        if(isMovingNow != _isCurrentlyMoving) // Durum değişikliği kontrol edilir.
+        {
+            _isCurrentlyMoving = isMovingNow; // Durum değişmişse yeni durum anlık duruma eşitlenir.
+
+            OnMovementStateChanged?.Invoke(_isCurrentlyMoving); // Eventi içerisine yeni bool değerini koyarak fırlatır.
+        }
+    }
+
 }
 

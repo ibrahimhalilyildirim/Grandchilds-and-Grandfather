@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public event Action<bool> OnMovementStateChanged;
-
     [Header("Movement Settings")]
     [SerializeField] private Transform _orentationTransform;
     [SerializeField] private float _movementSpeed;
@@ -24,6 +22,7 @@ public class PlayerController : MonoBehaviour
     [Header("Visual Settings")]
     [SerializeField] private Transform _playerVisual; // Karakter modelinin olduğu obje.
     [SerializeField] private float _rotationSpeed = 10f; // Karakter modelinin dönüş hızı.
+    private StateController _stateController;
 
     private void RotatePlayerViusal()
     {
@@ -43,6 +42,7 @@ public class PlayerController : MonoBehaviour
     // Start: Obje "hayata başlamadan" hemen önce çalışır. Sadece 1 kez çalışır.
     private void Awake()
     {
+        _stateController = GetComponent<StateController>();
         _playerRigidbody = GetComponent<Rigidbody>();
     }
     private void SetInputs()
@@ -76,20 +76,25 @@ public class PlayerController : MonoBehaviour
         SetPlayerJumping();
         SetInputs();
         RotatePlayerViusal();
-        IsPlayerMoving();
+        SetStates();
     }
-    private void IsPlayerMoving()
+    private void SetStates()
     {
-        Vector3 horizontalVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
-        bool isMovingNow = horizontalVelocity.magnitude > 0.1f;
-
-        if(isMovingNow != _isCurrentlyMoving) // Durum değişikliği kontrol edilir.
+        var movementDirection = _movementDirection.normalized;
+        var currentState = _stateController.GetCurrentState();
+        var newState = currentState switch
         {
-            _isCurrentlyMoving = isMovingNow; // Durum değişmişse yeni durum anlık duruma eşitlenir.
-
-            OnMovementStateChanged?.Invoke(_isCurrentlyMoving); // Eventi içerisine yeni bool değerini koyarak fırlatır.
+            _ when movementDirection == Vector3.zero => PlayerState.Idle,
+            _ when movementDirection != Vector3.zero => PlayerState.Move,
+            _ => currentState
+        };
+        if(newState != currentState)
+        {
+            _stateController.ChangeState(newState);
         }
+        Debug.Log("New States: " + newState);
     }
+
 
 }
 

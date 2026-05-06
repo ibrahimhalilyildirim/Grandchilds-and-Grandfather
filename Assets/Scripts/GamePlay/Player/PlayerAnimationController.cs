@@ -4,53 +4,28 @@ public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private Animator _playerAnimator;
     private PlayerController _playerController;
-    [SerializeField] private PlayerState _currentState = PlayerState.Idle; // Oluşturduğumuz enumu değişken olacak şekilde tanımlıyoruz.
-    // C# için () fonksiyonu hemen çağırır. Bu yüzden event yapılarında kullanılmaz.
+    private StateController _stateController;
+
     private void Awake()
     {
         _playerController = GetComponent<PlayerController>();
+        _stateController = GetComponent<StateController>();
     }
-    private void OnEnable()
+    private void SetPlayerAnimatons()
     {
-        if(_playerController != null)
-        {
-           _playerController.OnMovementStateChanged += SetMovementState; 
-        }
-    } 
-       private void OnDisable()
-    {
-        if(_playerController != null)
-        {
-           _playerController.OnMovementStateChanged -= SetMovementState; 
-        }
-    }
-    private void SetMovementState(bool isMoving)
-    {
-        if (isMoving)
-        {
-            _currentState = PlayerState.Move;
-            Debug.Log("Moving");
-        }
-        else
-        {
-            _currentState = PlayerState.Idle;
-            Debug.Log("Idling");
-        }
-        SetPlayerAnimation();
-    }
-    private void SetPlayerAnimation()
-    {
-        switch (_currentState)
+        var currentState = _stateController.GetCurrentState();
+        switch (currentState)
         {
             case PlayerState.Idle:
-                _playerAnimator.Play(Consts.PlayerState.PLAYER_IDLE);
+                _playerAnimator.SetBool(Consts.PlayerAnimations.IS_MOVING, false);
                 break;
-            
             case PlayerState.Move:
-                _playerAnimator.Play(Consts.PlayerState.PLAYER_WALKING);
+                _playerAnimator.SetBool(Consts.PlayerAnimations.IS_MOVING, true);
                 break;
         }
     }
+    private void Update()
+    {
+        SetPlayerAnimatons();
+    }
 }
-
-

@@ -5,10 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public event Action OnPlayerJumped;
+
     [Header("Movement Settings")]
     [SerializeField] private Transform _orentationTransform;
     [SerializeField] private float _movementSpeed;
     private bool _isCurrentlyMoving = false;
+    private RaycastHit _slopeHit;
 
     private Rigidbody _playerRigidbody;
     private float _horizontalInput, _verticalInput;
@@ -40,6 +42,16 @@ public class PlayerController : MonoBehaviour
             _playerVisual.rotation = Quaternion.Slerp(_playerVisual.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
         }
     }
+    private bool OnSlope()
+    {
+        if(Physics.Raycast(transform.position, Vector3.down, out _slopeHit, _playerHeight * 0.5f + 0.3f, _groundLayer))
+        {
+            float angle = Vector3.Angle(Vector3.up, _slopeHit.normal);
+
+            return angle < 45f && angle != 0;
+        }
+        return false;
+    }
 
 
     // Awake: Obje doğar doğmaz (henüz "gözlerini açmadan") çalışır. Sadece 1 kez çalışır.
@@ -67,8 +79,9 @@ public class PlayerController : MonoBehaviour
     {
         _movementDirection = _orentationTransform.forward * _verticalInput
         + _orentationTransform.right * _horizontalInput;
-
+            
         _playerRigidbody.AddForce(_movementDirection.normalized * _movementSpeed * forceMultiplier, ForceMode.Force);
+
     }
     private void SetPlayerJumping()
     {

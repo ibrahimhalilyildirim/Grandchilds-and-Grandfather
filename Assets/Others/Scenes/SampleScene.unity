@@ -722,10 +722,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orentationTransform: {fileID: 32451347}
-  _movementSpeed: 15
+  _movementSpeed: 20
   forceMultiplier: 1
   _jumpKey: 32
-  _jumpForce: 5
+  _jumpForce: 10
+  _playerHeight: 2
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _canJump: 1
+  _jumpCooldown: 4
   _playerVisual: {fileID: 6320412751926427227}
   _rotationSpeed: 5
 --- !u!4 &620946107
@@ -816,7 +822,7 @@ GameObject:
   - component: {fileID: 782946997}
   - component: {fileID: 782946996}
   - component: {fileID: 782946995}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}

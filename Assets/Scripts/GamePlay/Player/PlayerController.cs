@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public event Action OnPlayerJumped;
     [Header("Movement Settings")]
     [SerializeField] private Transform _orentationTransform;
     [SerializeField] private float _movementSpeed;
@@ -18,6 +19,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private KeyCode _jumpKey;
     [SerializeField] private float _jumpForce;
+    [SerializeField] private float _playerHeight;
+    [SerializeField] LayerMask _groundLayer;
+    [SerializeField] private bool _canJump = true;
+    [SerializeField] private float _jumpCooldown;
 
     [Header("Visual Settings")]
     [SerializeField] private Transform _playerVisual; // Karakter modelinin olduğu obje.
@@ -49,6 +54,14 @@ public class PlayerController : MonoBehaviour
     {
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
+
+        if(Input.GetKeyDown(_jumpKey) && _canJump && IsGrounded())
+        {
+            _canJump = false;
+            SetPlayerJumping();
+            Invoke(nameof(ResetJumping), _jumpCooldown);
+            
+        }
     }
     private void SetPlayerMovement()
     {
@@ -59,13 +72,12 @@ public class PlayerController : MonoBehaviour
     }
     private void SetPlayerJumping()
     {
-        if (Input.GetKeyDown(_jumpKey))
-        {
+        OnPlayerJumped?.Invoke();
             _playerRigidbody.linearVelocity = new UnityEngine.Vector3(_playerRigidbody.linearVelocity.x,
             0f, _playerRigidbody.linearVelocity.z);
 
             _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
-        }
+        
     }
     private void FixedUpdate()
     {
@@ -73,10 +85,13 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        SetPlayerJumping();
         SetInputs();
-        RotatePlayerViusal();
         SetStates();
+        RotatePlayerViusal();
+    }
+    private void ResetJumping()
+    {
+        _canJump = true;
     }
     private void SetStates()
     {
@@ -93,6 +108,10 @@ public class PlayerController : MonoBehaviour
             _stateController.ChangeState(newState);
         }
         Debug.Log("New States: " + newState);
+    }
+    private bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.2f, _groundLayer);
     }
 
 

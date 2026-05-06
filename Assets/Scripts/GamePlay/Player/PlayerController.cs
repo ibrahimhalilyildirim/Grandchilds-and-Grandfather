@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour
         var currentState = _stateController.GetCurrentState();
         var newState = currentState switch
         {
+            _ when !IsGrounded() => PlayerState.Jump,
             _ when movementDirection == Vector3.zero => PlayerState.Idle,
             _ when movementDirection != Vector3.zero => PlayerState.Move,
             _ => currentState

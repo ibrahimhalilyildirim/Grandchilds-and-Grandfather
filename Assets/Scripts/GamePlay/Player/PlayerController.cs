@@ -108,7 +108,6 @@ public class PlayerController : MonoBehaviour
         {
             _stateController.ChangeState(newState);
         }
-        Debug.Log("New States: " + newState);
     }
     private bool IsGrounded()
     {

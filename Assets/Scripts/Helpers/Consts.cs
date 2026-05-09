@@ -17,4 +17,5 @@ public class Consts : MonoBehaviour
         public const string IS_MOVING = "IsMoving";
         public const string IS_JUMPING = "IsJumping";
     }
+
 }

@@ -556,7 +556,7 @@ Transform:
   m_GameObject: {fileID: 133959933}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 6.95, z: 0}
+  m_LocalPosition: {x: -8.96, y: 1.9, z: 31.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1645,68 +1645,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3379003304644510902, guid: 593d4f7dc5f444843b2b02f101b56b8c, type: 3}
---- !u!1001 &540076329
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 983766443}
-    m_Modifications:
-    - target: {fileID: 6147291089501113459, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_Name
-      value: Stairs  (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 6147291089501113459, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -179.87
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 65.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.57559985
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.8177315
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 109.717
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6618329727794237596, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
 --- !u!1 &543874638
 GameObject:
   m_ObjectHideFlags: 0
@@ -1733,7 +1671,7 @@ Transform:
   m_GameObject: {fileID: 543874638}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 35.5, z: -0}
+  m_LocalPosition: {x: -0, y: 35.5, z: 160.4}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2100,11 +2038,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7073666928156250319, guid: 593d4f7dc5f444843b2b02f101b56b8c, type: 3}
---- !u!4 &678420054 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9177575574607059973, guid: a1e3491ed98a7354da68107bac65d24e, type: 3}
-  m_PrefabInstance: {fileID: 540076329}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &718018623
 GameObject:
   m_ObjectHideFlags: 0
@@ -2822,7 +2755,6 @@ Transform:
   - {fileID: 1329482539}
   - {fileID: 23756795}
   - {fileID: 1088566053}
-  - {fileID: 678420054}
   - {fileID: 254293588}
   - {fileID: 1572647018}
   - {fileID: 1666121054}

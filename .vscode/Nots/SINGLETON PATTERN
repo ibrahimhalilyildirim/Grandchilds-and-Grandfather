@@ -1,0 +1,22 @@
+// Singleton her script tarafından ulaşılabilen ve sadece bir tane bulunabilen bir yapıdrır.
+// Görece birbirleriyle alakasız objeleri oyun içerisinde ilişkilendirebilmemize olanak sağlar.
+
+// ÖRN:
+
+// public class BackgrondMusic : MonoBehaviour
+// {
+//     public static BackgrondMusic instance;
+
+//     private void Awake()
+//     {
+//         if(instance != null)
+//         {
+//             Destro(gameObject); // Eğer hali hazırda bir instance varsa yeni oluşturulanı yok et.
+//         }
+//         else
+//         {
+//             instance = this; // Yoksa da bu scripte bu instance'ı ata.
+//             DontDestroyOnLoad(this.gameObject);
+//         }
+//     }
+// }

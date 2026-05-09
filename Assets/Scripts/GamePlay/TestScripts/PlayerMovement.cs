@@ -1,138 +1,207 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
-[Header("Movement")]
-[SerializeField]private float moveSpeed;
-public float walkSpeed;
-public float SprintSpeed;
-public float groundDrag;
-public float jumpForce;
-public float jumpCooldown;
-public float airMultiplier;
-bool readyToJump;
+
+public event Action<PlayerState> OnplayerStateChanged;
+
+[Header("Movement Settings")]
+[SerializeField] private float _movementSpeed;
+[SerializeField] private Transform _orientation;
+private float _horizontalInput, _verticalInput;
+private Vector3 _movementDirection;
+private Rigidbody _playerRigidbody;
+
+private StateController _stateController;
+
+[Header("Rotation Settings")]
+[SerializeField] private float _rotationSpeed = 10f;
+[SerializeField] private Transform _playerVisual;
+
+
+[Header("Jump Settings")]
+[SerializeField] private float _jumpForce;
+[SerializeField] private float _jumpCooldown;
+[SerializeField] private float _airMultiplier;
+[SerializeField] private bool _canJump;
+[SerializeField ] private KeyCode jumpKey;
+
 [Header("Slope Handling")]
-public float maxSlopeAngle;
-public RaycastHit slopeHit;
-private bool exitingSlope;
+[SerializeField] private float _maxSlopeAngle;
+[SerializeField] private bool existingSlope;
+private RaycastHit _slopeHit;
 
-[Header("KeyBinds")]
-public KeyCode jumpKey = KeyCode.Space;
 [Header("Ground Check")]
-public float playerHeight;
-public LayerMask whatIsGround;
-bool grounded;
-
-
-public Transform orientation;
-float horizontalInput;
-float verticalInput;
-
-Vector3 moveDirection;
-Rigidbody rb;
+[SerializeField] private float _playerHeight;
+[SerializeField] private LayerMask _groundLayer;
+[SerializeField] private float _groundDrag;
+private bool _isGrounded;
+    private void Awake()
+    {
+        _playerRigidbody = GetComponent<Rigidbody>();
+        _stateController = GetComponent<StateController>();
+    }
     private void Start()
     {
-        readyToJump = true;
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        _canJump = true;
+        _playerRigidbody.freezeRotation = true;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+    private void SetCursor()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
     private void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.3f, _groundLayer);
 
-        MyInput();
+        SetInputs();
         SpeedControl();
+        SetStates();
+        SetRotation();
+        SetCursor();
 
-        if (grounded)
+        if (_isGrounded)
         {
-            rb.linearDamping = groundDrag;
+            _playerRigidbody.linearDamping = _groundDrag;
         }
         else
         {
-            rb.linearDamping = 0;
+            _playerRigidbody.linearDamping = 0;
         }
+
     }
     private void FixedUpdate()
     {
         MovePlayer();
     }
-    private void MyInput()
+    private void SetInputs()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        _horizontalInput = Input.GetAxisRaw("Horizontal");
+        _verticalInput = Input.GetAxisRaw("Vertical");
 
-        if(Input.GetKey(jumpKey) && readyToJump && grounded){
-            readyToJump = false;
+        if(Input.GetKeyDown(jumpKey) && _canJump && _isGrounded){
+            _canJump = false;
             Jump();
-            Invoke(nameof(ResetJump), jumpCooldown);
+            Invoke(nameof(ResetJump), _jumpCooldown);
         }
+    }
+    private void SetRotation()
+    {
+        Vector3 flatMovementDirection = new Vector3(_movementDirection.x, 0f, _movementDirection.z);
+        if(flatMovementDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(flatMovementDirection);
+            _playerVisual.rotation = Quaternion.Slerp(_playerVisual.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
+        }
+
     }
     private void MovePlayer()
     {
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        _playerRigidbody.useGravity = !OnSlope(); // Karakter eğimli bir yüzeyde ise yerçekimi kapatılıyor ki karakter kaymasın.
+        _movementDirection = _orientation.forward * _verticalInput + _orientation.right * _horizontalInput;
 
-        if (OnSlope() && !exitingSlope)
+        if (OnSlope() && !existingSlope)
         {
-            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
-            if(rb.linearVelocity.y > 0)
+            _playerRigidbody.AddForce(GetSlopeMoveDirection() * _movementSpeed * 20f, ForceMode.Force);
+            if(_playerRigidbody.linearVelocity.y > 0)
             {
-                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+                _playerRigidbody.AddForce(Vector3.down * 80f, ForceMode.Force);
             }
         }
-        else if (grounded)
+        else if (_isGrounded)
         {
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            _playerRigidbody.AddForce(_movementDirection.normalized * _movementSpeed * 10f, ForceMode.Force);
         }
-        else if(!grounded)
+        else if(!_isGrounded)
         {
-            rb.AddForce(moveDirection.normalized * airMultiplier * 10f, ForceMode.Force);
+            _playerRigidbody.AddForce(_movementDirection.normalized * _airMultiplier * 10f, ForceMode.Force);
         }
-        rb.useGravity = !OnSlope();
     }
     private void SpeedControl()
     {
-        if (OnSlope() && !exitingSlope)
+        if (OnSlope() && !existingSlope)
         {
-            if(rb.linearVelocity.magnitude > moveSpeed)
+            if(_playerRigidbody.linearVelocity.magnitude > _movementSpeed)
             {
-                rb.linearVelocity = rb.linearVelocity.normalized * moveSpeed;
+                _playerRigidbody.linearVelocity = _playerRigidbody.linearVelocity.normalized * _movementSpeed;
             }
         }
         else
         {
-            Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            Vector3 flatVel = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
 
-            if(flatVel.magnitude > moveSpeed)
+            if(flatVel.magnitude > _movementSpeed)
             {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.linearVelocity = new Vector3(limitedVel.x, rb.linearVelocity.y, limitedVel.z);
+            Vector3 limitedVel = flatVel.normalized * _movementSpeed;
+            _playerRigidbody.linearVelocity = new Vector3(limitedVel.x, _playerRigidbody.linearVelocity.y, limitedVel.z);
             }
         }
         
     }
     private void Jump()
     {
-        exitingSlope = true;
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        existingSlope = true;
+        _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
+        _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
     }
     private void ResetJump()
     {
-        readyToJump = true;
-        exitingSlope = false;
+        _canJump = true;
+        existingSlope = false;
     }
     private bool OnSlope()
     {
-        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
+        if(Physics.Raycast(transform.position, Vector3.down, out _slopeHit, _playerHeight * 0.5f + 0.3f))
         {
-            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < maxSlopeAngle && angle != 0;
+            float angle = Vector3.Angle(Vector3.up, _slopeHit.normal);
+            return angle < _maxSlopeAngle && angle != 0;
         }
         return false;
     }
     private Vector3 GetSlopeMoveDirection()
     {
-        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+        return Vector3.ProjectOnPlane(_movementDirection, _slopeHit.normal).normalized;
     }
+    private void SetStates()
+    {
+        var movementDirection = GetMovementDirection();
+        var isGrounded = IsGrounded();
+        var currentState = _stateController.GetCurrentState(); 
+
+        var newState = currentState switch
+        {
+            _ when movementDirection == Vector3.zero && isGrounded => PlayerState.Idle,
+            _ when movementDirection != Vector3.zero && isGrounded => PlayerState.Move,
+            _ when !isGrounded => PlayerState.Jump,
+            _ => currentState 
+        };
+        if(newState != currentState)
+        {
+            _stateController.GetChangeState(newState);
+            OnplayerStateChanged?.Invoke(newState);
+        }
+    }
+    private bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.3f, _groundLayer);
+    }
+    private Vector3 GetMovementDirection()
+    {
+        return _movementDirection.normalized;
+    }
+    
 }

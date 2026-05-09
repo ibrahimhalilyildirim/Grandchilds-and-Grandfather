@@ -1,0 +1,10 @@
+// // Interface OOP'nin temellerindendir.
+
+// public interface IClickable 
+// {
+//     void Click(); // Normalin aksine bu haliyle yazıldığı zaman public ve abstract olarak kabul edilir. Yani bu metotların gövdesi olmaz ve bu interface'i implement eden sınıflar bu metotları override etmek zorundadır.
+// }
+
+///////////////////////////////
+
+

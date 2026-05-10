@@ -11,7 +11,6 @@ public class StateController : MonoBehaviour
     {
         if(_currentPlayerState == newPlayerState) {return;}
             _currentPlayerState = newPlayerState;
-        Debug.Log("Current State" + _currentPlayerState);
     }
     public PlayerState GetCurrentState()
     {

@@ -1,16 +1,33 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BabeCounter : MonoBehaviour
 {
+    public static BabeCounter Instance {get; private set; }
     [SerializeField] private TextMeshProUGUI _babeCounterText;
     [SerializeField] private int _currentScore = 0;
     [SerializeField] private string _targetTag = "CollectibleBabe";
-    private void Start()
+
+    private void Awake()
     {
-        UpdateCounterDisplay();
+        if(Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
-    public void IncrementBabeCount()
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(_targetTag))
+        {
+            IncrementBabeCount();
+        }
+    }
+    private void IncrementBabeCount()
     {
         _currentScore++;
         UpdateCounterDisplay();
@@ -22,11 +39,8 @@ public class BabeCounter : MonoBehaviour
             _babeCounterText.text = "Current Score: " + _currentScore.ToString();
         }
     }
-    private void OnTriggerEnter(Collider other)
+    public int GetCurrentScore()
     {
-        if(other.CompareTag(_targetTag))
-        {
-            IncrementBabeCount();
-        }
+        return _currentScore;
     }
 }

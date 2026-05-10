@@ -1,8 +1,12 @@
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameState _currentGameState;
+    
+    [Header("Test")]
+    [SerializeField] private TMPro.TextMeshProUGUI _babeCounterText;
     private void Start()
     {
         _currentGameState = GameState.Play;
@@ -16,7 +20,7 @@ public class GameManager : MonoBehaviour
     }
     private void WonCheck()
     {
-        if(BabeCounter.Instance.GetCurrentScore() == 2)
+        if(BabeCounter.Instance.GetCurrentScore() == 6)
         {
             ChangeState(GameState.GameOver);
         }

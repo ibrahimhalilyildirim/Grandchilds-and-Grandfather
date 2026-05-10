@@ -8,6 +8,6 @@ public class MenuControllerUI : MonoBehaviour
 
     private void Awake()
     {
-        _playButton.onClick.AddListener(() => SceneManager.LoadScene(Consts.SceneNames.LEVELS_SCENE));
+        _playButton.onClick.AddListener(() => SceneManager.LoadScene(Consts.SceneNames.LEVEL_ONE_SCENE));
     }
 }

@@ -1,11 +1,11 @@
-using TMPro.EditorUtilities;
+using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameState _currentGameState;
-    
-    [Header("Test")]
+    public GameState _currentGameState;
     [SerializeField] private TMPro.TextMeshProUGUI _babeCounterText;
     private void Start()
     {
@@ -15,14 +15,20 @@ public class GameManager : MonoBehaviour
     {
         if(_currentGameState == GameState.Play) // Sadece Play state'i içerisindeysek kontrol yap.
         {
+            CloseLosePopup();
             WonCheck();
+        }
+        else if(_currentGameState == GameState.GameLose)
+        {
+            PreferencesPopupButtonUI.Instance.GetOnPreferencesButtonClicked();
+            _currentGameState = GameState.Pause;
         }
     }
     private void WonCheck()
     {
         if(BabeCounter.Instance.GetCurrentScore() == 6)
         {
-            ChangeState(GameState.GameOver);
+            ChangeState(GameState.GameWin);
         }
     }
     private void ChangeState(GameState newState)
@@ -30,10 +36,14 @@ public class GameManager : MonoBehaviour
         _currentGameState = newState;
         switch (_currentGameState)
         {
-            case GameState.GameOver:
+            case GameState.GameWin:
                 Debug.Log("YOU WON!");
                 break;
         }
+    }
+    private void CloseLosePopup()
+    {
+        PreferencesPopupButtonUI.Instance.CloseLosePopupUI();
     }
 
     

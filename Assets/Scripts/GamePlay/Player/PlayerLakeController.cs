@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerLakeCheck : MonoBehaviour
+public class PlayerLakeController : MonoBehaviour
 {
+
+    [SerializeField] private GameManager _gameManager;
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Lake"))
         {
-            SceneManager.LoadScene(Consts.SceneNames.LEVEL_ONE_SCENE);
+            _gameManager._currentGameState = GameState.GameLose;
         }
     }
 }

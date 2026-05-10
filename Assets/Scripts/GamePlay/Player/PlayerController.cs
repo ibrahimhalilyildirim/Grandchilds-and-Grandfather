@@ -48,22 +48,22 @@ private bool _isGrounded;
         _canJump = true;
         _playerRigidbody.freezeRotation = true;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
     }
-    private void SetCursor()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        if (Input.GetMouseButtonDown(0))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-    }
+    // private void SetCursor()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.Escape))
+    //     {
+    //         Cursor.lockState = CursorLockMode.None;
+    //         Cursor.visible = true;
+    //     }
+    //     if (Input.GetMouseButtonDown(0))
+    //     {
+    //         Cursor.lockState = CursorLockMode.Locked;
+    //         Cursor.visible = false;
+    //     }
+    // }
     private void Update()
     {
         _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.3f, _groundLayer);
@@ -72,7 +72,7 @@ private bool _isGrounded;
         SpeedControl();
         SetStates();
         SetRotation();
-        SetCursor();
+        // SetCursor();
 
         if (_isGrounded)
         {

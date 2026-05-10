@@ -20,7 +20,6 @@ public class Consts : MonoBehaviour
     public struct SceneNames
     {
         public const string MENU_SCENE = "MenuScene";
-        public const string LEVELS_SCENE = "LevelsScene";
         public const string LEVEL_ONE_SCENE = "LevelOneScene";
     }
 

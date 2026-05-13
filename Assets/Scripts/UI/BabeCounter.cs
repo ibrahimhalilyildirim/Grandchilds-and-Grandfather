@@ -36,7 +36,7 @@ public class BabeCounter : MonoBehaviour
     {
         if(_babeCounterText != null)
         { 
-            _babeCounterText.text = "Current Score: 0 " + _currentScore.ToString();   
+            _babeCounterText.text = "Current Score: " + _currentScore.ToString();   
         }
     }
     public int GetCurrentScore()

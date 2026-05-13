@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class BabeCollectible : MonoBehaviour
 {   
-    
+    [SerializeField] private SphereCollider _babeSphereCollider;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            Destroy(_babeSphereCollider);
             StartCoroutine(CollectAndDestroy(gameObject));
         }
     }

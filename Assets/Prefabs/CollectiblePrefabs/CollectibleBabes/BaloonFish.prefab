@@ -458,8 +458,9 @@ GameObject:
   - component: {fileID: 7866744415768840703}
   - component: {fileID: 5812700685667341147}
   - component: {fileID: 949925268793675988}
-  - component: {fileID: 5175213839254133755}
   - component: {fileID: 5100320663524542818}
+  - component: {fileID: 5175213839254133755}
+  - component: {fileID: 4286645717201207234}
   m_Layer: 0
   m_Name: BaloonFish
   m_TagString: CollectibleBabe
@@ -519,12 +520,25 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 3.3171802
-  m_Center: {x: 0, y: 2.062426, z: 0}
+  m_Radius: 5.451996
+  m_Center: {x: 0, y: 4.1972466, z: 0}
+--- !u!114 &5100320663524542818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851021631358587606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f580b349aa148ac4fb5df7475714bc54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _babeSphereCollider: {fileID: 949925268793675988}
 --- !u!54 &5175213839254133755
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -552,7 +566,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5100320663524542818
+--- !u!114 &4286645717201207234
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -561,7 +575,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1851021631358587606}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f580b349aa148ac4fb5df7475714bc54, type: 3}
+  m_Script: {fileID: 11500000, guid: ed1039b4e5e5cc2428401abe360a118b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1964640905630604797

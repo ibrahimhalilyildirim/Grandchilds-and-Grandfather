@@ -1874,6 +1874,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7369751185048180570}
   - component: {fileID: 8885700997027616762}
+  - component: {fileID: 6515895139645323701}
   - component: {fileID: 2797675990613057978}
   - component: {fileID: 6397191669530520200}
   - component: {fileID: 4801015894491150299}
@@ -1922,6 +1923,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.852299, y: 4.198485, z: 2.3868194}
   m_Center: {x: -0.06901729, y: 1.868686, z: -0.097058535}
+--- !u!114 &6515895139645323701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6857845986057884814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1039b4e5e5cc2428401abe360a118b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &2797675990613057978
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1937,12 +1950,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 3.3171802
-  m_Center: {x: 0, y: 2.062426, z: 0}
+  m_Radius: 5.451996
+  m_Center: {x: 0, y: 4.1972466, z: 0}
 --- !u!54 &6397191669530520200
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1982,6 +1995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f580b349aa148ac4fb5df7475714bc54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _babeSphereCollider: {fileID: 2797675990613057978}
 --- !u!65 &1964847981450117825
 BoxCollider:
   m_ObjectHideFlags: 0

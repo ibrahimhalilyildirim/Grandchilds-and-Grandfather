@@ -2156,6 +2156,7 @@ GameObject:
   - component: {fileID: 5122409098674121224}
   - component: {fileID: 5471698544968152899}
   - component: {fileID: 7972698437950775882}
+  - component: {fileID: 5967639945796559682}
   m_Layer: 0
   m_Name: GreenBear
   m_TagString: CollectibleBabe
@@ -2215,12 +2216,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 3.3171802
-  m_Center: {x: 0, y: 2.062426, z: 0}
+  m_Radius: 5.451996
+  m_Center: {x: 0, y: 4.1972466, z: 0}
 --- !u!54 &5471698544968152899
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2258,6 +2259,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f580b349aa148ac4fb5df7475714bc54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _babeSphereCollider: {fileID: 5122409098674121224}
+--- !u!114 &5967639945796559682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7943433792694080751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1039b4e5e5cc2428401abe360a118b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8010300986273828214

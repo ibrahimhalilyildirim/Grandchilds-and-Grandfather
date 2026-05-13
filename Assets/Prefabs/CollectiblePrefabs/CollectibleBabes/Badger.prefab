@@ -451,6 +451,7 @@ GameObject:
   - component: {fileID: 2966802885707478921}
   - component: {fileID: 274888888901888240}
   - component: {fileID: 8439226770831721483}
+  - component: {fileID: 8876361150611713144}
   - component: {fileID: 5293274294540232755}
   m_Layer: 0
   m_Name: Badger
@@ -535,6 +536,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f580b349aa148ac4fb5df7475714bc54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _babeSphereCollider: {fileID: 5293274294540232755}
+--- !u!114 &8876361150611713144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 687180553144094578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1039b4e5e5cc2428401abe360a118b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &5293274294540232755
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -550,12 +564,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 3.3171802
-  m_Center: {x: 0, y: 2.062426, z: 0}
+  m_Radius: 5.451996
+  m_Center: {x: 0, y: 4.1972466, z: 0}
 --- !u!1 &708967548567952124
 GameObject:
   m_ObjectHideFlags: 0
